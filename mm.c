@@ -480,7 +480,7 @@ void *mm_malloc(size_t size) {
   }
 
   size_t alignedSize =
-      ALIGN(MAX(size + SIZE_T_SIZE, MINIMUM_BLOCK_SIZE));  // make alignment
+      MAX(ALIGN(size + SIZE_T_SIZE), MINIMUM_BLOCK_SIZE);  // make alignment
 
   void *ptr = NULL;
 
