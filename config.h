@@ -12,10 +12,7 @@
  * This is the default path where the driver will look for the
  * default tracefiles. You can override it at runtime with the -t flag.
  */
-#define TRACEDIR                                                        \
-  "/home/taebum/phya.ktaebum"                                           \
-  "@gmail.com/CourseWork/2018Spring/2018-System-Programming/Workspace/" \
-  "assignment/lab6/malloclab-handout/traces/"
+#define TRACEDIR "./traces/"
 
 /*
  * This is the list of default tracefiles in TRACEDIR that the driver
