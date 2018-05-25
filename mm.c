@@ -583,7 +583,7 @@ void *mm_realloc(void *ptr, size_t size) {
     if (!prevAlloc && !nextAlloc) {
       mergedSize = (oldSize + nextSize + prevSize);
       if (mergedSize >= newSize) {
-        if (mergedSize - prevSize >= minPrevSize) {
+        if (mergedSize - newSize >= minPrevSize) {
           // safe to coalesce previous block
           deleteBlock(prevBlock);
           deleteBlock(nextBlock);
