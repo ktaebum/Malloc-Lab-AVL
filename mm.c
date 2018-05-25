@@ -161,10 +161,9 @@
 #define NOT_ALL_FREE_BLOCKS_IN_TREE 1
 #define NOT_ALL_TREES_ARE_BALANCED 2
 #define NOT_ALL_FREE_BLOCKS_SORTED_BY_ADDRESS 3
-#define NOT_COALESCED_BLOCK_EXIST 4
-#define NOT_ALL_FREE_BLOCK_MARKED_AS_FREE 5
-#define NOT_ALL_TREE_NODE_IN_PROPER_TREE 6
-#define NOT_ALL_BLOCKS_BIGGER_THAN_MIN_BLOCK_SIZE 7
+#define NOT_ALL_FREE_BLOCK_MARKED_AS_FREE 4
+#define NOT_ALL_TREE_NODE_IN_PROPER_TREE 5
+#define NOT_ALL_BLOCKS_BIGGER_THAN_MIN_BLOCK_SIZE 6
 
 static char *heap_listp = NULL;      // point prologue block
 static void *segregated_avl = NULL;  // point start of segregated_avls
@@ -396,7 +395,6 @@ static void checkAllTreesBalanced();
 static void checkAllTreesBalanced_(void *root);
 static void checkAllTreesOrderedByAddress();
 static void checkAllTreesOrderedByAddress_(void *root, void *previous);
-static void checkNoPossibleCoalesceBlocks();
 static void checkEveryFreeBlockMarkedAsFree();
 static void checkEveryFreeBlockMarkedAsFree_(void *root);
 static void checkEveryTreeNodeInProperTree();
@@ -413,7 +411,6 @@ int mm_check(void) {
   checkAllFreeBlocksInTree();
   checkAllTreesBalanced();
   checkAllTreesOrderedByAddress();
-  checkNoPossibleCoalesceBlocks();
   checkEveryFreeBlockMarkedAsFree();
   checkEveryTreeNodeInProperTree();
   checkEveryBlocksBiggerThanMIN_BLOCK_SIZE();
@@ -1082,36 +1079,6 @@ static void checkAllTreesOrderedByAddress_(void *root, void *previous) {
   }
 
   checkAllTreesOrderedByAddress_(right, previous);
-}
-
-static void checkNoPossibleCoalesceBlocks() {
-  return;
-  void *traverse = heap_listp;
-  int allocated;
-  size_t size;
-
-  void *prevBlock;
-  void *nextBlock;
-
-  while ((size = GET_SIZE(HEADER(traverse))) != 0) {
-    allocated = GET_ALLOC(HEADER(traverse));
-    prevBlock = PREV_BLOCK(traverse);
-    nextBlock = NEXT_BLOCK(traverse);
-
-    if (!allocated) {
-      if (!GET_ALLOC(prevBlock)) {
-        fprintf(stderr, "prevBlock not coalesced!\n");
-        exit(NOT_COALESCED_BLOCK_EXIST);
-      }
-
-      if (!GET_ALLOC(nextBlock)) {
-        fprintf(stderr, "nextBlock not coalesced!\n");
-        exit(NOT_COALESCED_BLOCK_EXIST);
-      }
-    }
-
-    traverse = NEXT_BLOCK(traverse);
-  }
 }
 
 static void checkEveryFreeBlockMarkedAsFree() {
